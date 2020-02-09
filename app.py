@@ -1,13 +1,15 @@
 import os, sys, django
 from django.conf import settings
 
-APP_NAME = 'app'
-
 def path_to(*parts):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), *parts)
 
 
+# ----------------------------------------------------------------------------------------------------------------------
 # Configuration:
+
+APP_NAME = 'app'
+
 if not settings.configured:
     sys.modules[APP_NAME] = sys.modules[__name__] # put ourselves in the module cache under APP_NAME
 
@@ -47,7 +49,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 
+# ----------------------------------------------------------------------------------------------------------------------
 # Models
+
 class BaseModel(models.Model):
     class Meta:
         abstract = True
@@ -57,18 +61,25 @@ class MyModel(BaseModel):
     pass
 
 
+# ----------------------------------------------------------------------------------------------------------------------
 # Views
+
 def index(request):
     MyModel().save()
     return render(request, 'index.html', { 'count': MyModel.objects.count() })
 
 
+# ----------------------------------------------------------------------------------------------------------------------
 # Urls
+
 urlpatterns = [
     path("", index),
     *staticfiles_urlpatterns()
 ]
 
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Main
 
 if __name__ == "__main__":
     from django.core import management
