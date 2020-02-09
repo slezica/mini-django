@@ -1,5 +1,9 @@
-An entire Django application contained in a single file. Can `runserver`, serve static files, `makemigrations` and `migrate`,
-and be served by `gunicorn`.
+An entire Django application contained in a single file. This example can:
+
+- run `runserver` in debug with static files
+- run `makemigrations` and `migrate`
+- render templates
+- be served by `gunicorn`
 
 ```bash
 # Enter environment and install:

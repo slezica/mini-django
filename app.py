@@ -22,7 +22,7 @@ if not settings.configured:
         INSTALLED_APPS = [ __name__ ],
 
         TEMPLATES = [
-            {"BACKEND": "django.template.backends.django.DjangoTemplates", "DIRS": path_to(".")}
+            {"BACKEND": "django.template.backends.django.DjangoTemplates", "DIRS": [ path_to("templates") ]}
         ],
 
         STATIC_URL = "/static/",
@@ -39,6 +39,7 @@ if not settings.configured:
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.db import models
 from django.urls import path
+from django.shortcuts import render
 from django.http import HttpResponse
 
 
@@ -55,7 +56,7 @@ class MyModel(BaseModel):
 # Views
 def index(request):
     MyModel().save()
-    return HttpResponse("Hello! We have %d objects saved. Also, try /static/data.txt" % MyModel.objects.count())
+    return render(request, 'index.html', { 'count': MyModel.objects.count() })
 
 
 # Urls
