@@ -15,27 +15,26 @@ if not settings.configured:
 
     settings.configure(
         DEBUG = (__name__ == '__main__'),
+        INSTALLED_APPS = [ APP_NAME ],
+
         ROOT_URLCONF = APP_NAME,
-        
+        ALLOWED_HOSTS = ['*'],
+
+        MIGRATION_MODULES = { APP_NAME: 'migrations' },
         DATABASES = {
-            # NOTE: leave an empty dict in default if not using a database, this entry is still required.
             'default': {
+                # NOTE: leave an empty dict here if not using a database, this entry is still required.
                 'ENGINE': 'django.db.backends.sqlite3',
                 'NAME': path_to('db.sqlite3'),
             }
         },
-
-        INSTALLED_APPS = [ APP_NAME ],
 
         TEMPLATES = [
             {"BACKEND": "django.template.backends.django.DjangoTemplates", "DIRS": [ path_to("templates") ]}
         ],
 
         STATIC_URL = "/static/",
-        STATICFILES_DIRS = (path_to("static"),),
-        MIGRATION_MODULES = { APP_NAME: 'migrations' },
-
-        ALLOWED_HOSTS = ['*']
+        STATICFILES_DIRS = (path_to("static"),)
     )
     
     django.setup()
