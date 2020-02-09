@@ -1,25 +1,29 @@
 import os, sys, django
 from django.conf import settings
 
+APP_NAME = 'app'
 
 def path_to(*parts):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), *parts)
 
+
 # Configuration:
 if not settings.configured:
+    sys.modules[APP_NAME] = sys.modules[__name__] # put ourselves in the module cache under APP_NAME
+
     settings.configure(
         DEBUG = (__name__ == '__main__'),
-        ROOT_URLCONF = __name__,
+        ROOT_URLCONF = APP_NAME,
         
         DATABASES = {
             # NOTE: leave an empty dict in default if not using a database, this entry is still required.
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': 'db.sqlite3',
+                'NAME': path_to('db.sqlite3'),
             }
         },
 
-        INSTALLED_APPS = [ __name__ ],
+        INSTALLED_APPS = [ APP_NAME ],
 
         TEMPLATES = [
             {"BACKEND": "django.template.backends.django.DjangoTemplates", "DIRS": [ path_to("templates") ]}
@@ -27,7 +31,7 @@ if not settings.configured:
 
         STATIC_URL = "/static/",
         STATICFILES_DIRS = (path_to("static"),),
-        MIGRATION_MODULES = { __name__: 'migrations' },
+        MIGRATION_MODULES = { APP_NAME: 'migrations' },
 
         ALLOWED_HOSTS = ['*']
     )
@@ -47,7 +51,7 @@ from django.http import HttpResponse
 class BaseModel(models.Model):
     class Meta:
         abstract = True
-        app_label = __name__
+        app_label = APP_NAME
 
 class MyModel(BaseModel):
     pass
